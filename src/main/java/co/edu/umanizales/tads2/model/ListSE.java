@@ -63,13 +63,51 @@ public class ListSE {
     si hay datos
     si
         llamo a ayudante
+        creo nuevo costal con el niño dentro
         identifico que costal esta en la posicion x
-        a la posicion x-1 es decir al costal anterior, le digo que se suelte del costal que tenga agarrado,
-        a continuacion pego el brazo suelto del anterior costal al nuevocostal,
-        el brazo de nuevocostal se pegara al costal que tiene delante
+        posicion x es menor o igual a 1?
+        Si es asi
+            nuevo costal se colocara detras de cabeza
+            FIN CODIGO
+        Si no es asi
+            ayudante se pone a recorrer la lista para llegar a la posicion x-1
+            en algun momento mientras ayudante recorre la lista el costal siguiente esta vacio?
+            Si es asi
+                nuevo costal se colocara al final de la lista
+                FIN CODIGO
+            Si no es asi
+                al costal donde esta posicionado ayudante le digo que suelte el costal que tenga agarrado,
+                a continuacion pego el brazo suelto del costal donde esta posicionado ayudante al nuevocostal,
+                el brazo de nuevocostal se pegara al costal que tiene delante
     no
         meto el niño en un costal y lo asigno a la cabeza
      */
+    public void addToXPosition(Kid kid, byte position){
+        if(head != null) {
+            Node temp = head;
+            Node newNode = new Node(kid);
+
+            if (position <= 1) {
+                newNode.setNext(head);
+                head = newNode;
+            } else {
+                for (byte i = 1; i < position - 1; i++) {
+                    if (temp.getNext() == null) {
+                        temp.setNext(newNode);
+                        return;
+                    }
+                    temp = temp.getNext();
+                }
+
+                newNode.setNext(temp.getNext());
+                temp.setNext(newNode);
+            }
+        }
+        else{
+            head = new Node(kid);
+        }
+    }
+    /*
     public void addToXPosition(Kid kid, byte position){
         if(head !=null)
         {
@@ -108,17 +146,62 @@ public class ListSE {
             head = new Node(kid);
         }
     }
+     */
 
     /* Eliminar niño por id
 
-        llamo a ayudante
-        identifico que costal tiene la id del niño
-        al costal anterior, le digo que se suelte del costal con el id del niño,
-        al costal con el id del niño le digo que se suelte del costal que tiene adelante
-        separo y elimino el costal del niño con id
-        uno el costal anterior con el costal de delante
-
+        si hay datos
+        si
+            llamo a ayudante
+            ayudante se posiciona en cabeza
+            el niño del costal en el que se encuentra ayudante tiene la misma id que la ingresada?
+            si es asi
+                despego el brazo del costal donde esta ayudante, asi elimino el costal
+                FIN CODIGO
+            si no es asi
+                el costal siguiente esta vacio?
+                si es asi
+                    FIN CODIGO
+                si no es asi
+                    el niño del costal siguiente del que se encuentra ayudante tiene la misma id que la ingresada?
+                    si es asi
+                        despego el brazo del costal donde esta ayudante,
+                        al costal con el id del niño le digo que se suelte del costal que tiene adelante
+                        quedando asi suelto y uniendo el costal donde esta situado ayudante con el costal
+                        de adelante del costal de la id del niño
+                        FIN CODIGO
+                    si no es asi
+                        ayudante recorre la lista buscando a un costal con un niño con la misma id
+                        en algun momento mientras recorre la lista costal siguiente esta vacio?
+                        si es asi
+                            FIN CODIGO
+                        si no es asi
+                            sigue recorriendo la lista buscando a un niño que coincida con el id ingresado
+        no
+            no se hace nada
      */
+    public void deleteKidByIdentification(String identification){
+        if(head !=null){
+            Node temp = head;
+
+            if(temp.getData().getIdentification() == identification){
+                temp = temp.getNext();
+                head = temp;
+            }
+            else{
+                if(temp.getNext() != null){
+                    while(temp.getNext().getData().getIdentification() != identification){
+                        temp = temp.getNext();
+                        if(temp.getNext() == null){
+                            return;
+                        }
+                    }
+                    temp.setNext(temp.getNext().getNext());
+                }
+            }
+        }
+    }
+    /*
     public void deleteKidByIdentification(String identification){
         if(head !=null)
         {
@@ -163,6 +246,6 @@ public class ListSE {
             }
 
         }
-
     }
+    */
 }
