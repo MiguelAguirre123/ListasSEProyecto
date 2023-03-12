@@ -248,4 +248,76 @@ public class ListSE {
         }
     }
     */
+    public void deleteKidsByAge(byte age){
+        if(head != null){
+             ListSE newList = new ListSE();
+            Node temp = head;
+
+            while(temp.getData() != null){
+                if(temp.getData().getAge() != age){
+                    newList.add(temp.getData());
+                }
+                if(temp.getNext() == null){
+                    break;
+                }
+                else{
+                    temp = temp.getNext();
+                }
+            }
+            head = newList.getHead();
+        }
+    }
+    public void moveKidByPosition(String identificacion, byte position) {
+        if (head != null){
+            byte positionTemp = 1;
+            Node temp = head;
+            Kid kidById = null;
+
+            if(temp.getNext() == null || position == 0){
+                return;
+            }
+
+            if(position < 0 && temp.getData().getIdentification() == identificacion){
+                kidById = temp.getData();
+                temp = temp.getNext();
+                head = temp;
+                positionTemp = 0;
+            }
+            else {
+                while (temp.getNext() != null) {
+                    if (temp.getNext().getData().getIdentification() == identificacion) {
+                        kidById = temp.getNext().getData();
+                        temp.setNext(temp.getNext().getNext());
+                        break;
+                    } else {
+                        temp = temp.getNext();
+                        positionTemp++;
+                        if (temp.getNext() == null) {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            byte restaPosition = (byte)(positionTemp - position);
+
+            if(restaPosition < 1){
+                Node newNode = new Node(kidById);
+                newNode.setNext(head);
+                head = newNode;
+            }
+            else{
+                temp = head;
+                for(byte i = 1; i < restaPosition; i++){
+                    if(temp.getNext() == null){
+                        break;
+                    }
+                    temp = temp.getNext();
+                }
+                Node newNode = new Node(kidById);
+                newNode.setNext(temp.getNext());
+                temp.setNext(newNode);
+            }
+        }
+    }
 }
