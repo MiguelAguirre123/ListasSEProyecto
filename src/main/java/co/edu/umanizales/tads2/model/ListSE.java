@@ -184,13 +184,13 @@ public class ListSE {
         if(head !=null){
             Node temp = head;
 
-            if(temp.getData().getIdentification() == identification){
+            if(temp.getData().getIdentification().equalsIgnoreCase(identification)){
                 temp = temp.getNext();
                 head = temp;
             }
             else{
                 if(temp.getNext() != null){
-                    while(temp.getNext().getData().getIdentification() != identification){
+                    while(!temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)){
                         temp = temp.getNext();
                         if(temp.getNext() == null){
                             return;
@@ -267,7 +267,7 @@ public class ListSE {
             head = newList.getHead();
         }
     }
-    public void moveKidByPosition(String identificacion, byte position) {
+    public void moveKidByPosition(String identification, byte position) {
         if (head != null){
             byte positionTemp = 1;
             Node temp = head;
@@ -277,7 +277,7 @@ public class ListSE {
                 return;
             }
 
-            if(position < 0 && temp.getData().getIdentification() == identificacion){
+            if(position < 0 && (temp.getData().getIdentification().equalsIgnoreCase(identification))){
                 kidById = temp.getData();
                 temp = temp.getNext();
                 head = temp;
@@ -285,7 +285,7 @@ public class ListSE {
             }
             else {
                 while (temp.getNext() != null) {
-                    if (temp.getNext().getData().getIdentification() == identificacion) {
+                    if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                         kidById = temp.getNext().getData();
                         temp.setNext(temp.getNext().getNext());
                         break;
@@ -318,6 +318,50 @@ public class ListSE {
                 newNode.setNext(temp.getNext());
                 temp.setNext(newNode);
             }
+        }
+    }
+
+    public String compareIdKids(String identification) {
+        if (head != null) {
+            Node temp = head;
+
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                return "confirmado";
+            } else {
+                while (temp.getNext() != null) {
+                    temp = temp.getNext();
+                    if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                        return "confirmado";
+                    }
+                }
+            }
+
+            return null;
+        }
+        else{
+            return  null;
+        }
+    }
+
+    public String compareAgeKids(byte age) {
+        if (head != null) {
+            Node temp = head;
+
+            if (temp.getData().getAge() == age) {
+                return "confirmado";
+            } else {
+                while (temp.getNext() != null) {
+                    temp = temp.getNext();
+                    if (temp.getData().getAge() == age) {
+                        return "confirmado";
+                    }
+                }
+            }
+
+            return null;
+        }
+        else{
+            return null;
         }
     }
 }

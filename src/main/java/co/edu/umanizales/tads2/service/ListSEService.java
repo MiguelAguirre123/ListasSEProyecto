@@ -13,25 +13,25 @@ public class ListSEService {
 
     public ListSEService() {
         kids = new ListSE();
-        kids.add(new Kid("123","Carlos",(byte)4));
-        kids.add(new Kid("256","Mariana",(byte)3));
-        kids.add(new Kid("789","Daniel",(byte)2));
-        kids.add(new Kid("156","Paola",(byte)5));
-        kids.add(new Kid("196","Lina",(byte)2));
-        kids.add(new Kid("678","Sofia",(byte)2));
-        kids.add(new Kid("934","Juan",(byte)5));
-        kids.add(new Kid("177","Rodrigo",(byte)6));
-        kids.add(new Kid("481","Sergio",(byte)4));
+        //kids.add(new Kid("123","Carlos",(byte)4));
+        //kids.add(new Kid("256","Mariana",(byte)3));
+        //kids.add(new Kid("789","Daniel",(byte)2));
+        //kids.add(new Kid("156","Paola",(byte)5));
+        //kids.add(new Kid("196","Lina",(byte)2));
+        //kids.add(new Kid("678","Sofia",(byte)2));
+        //kids.add(new Kid("934","Juan",(byte)5));
+        //kids.add(new Kid("177","Rodrigo",(byte)6));
+        //kids.add(new Kid("481","Sergio",(byte)4));
 
-        kids.deleteKidsByAge((byte)2);
+        //kids.deleteKidsByAge((byte)2);
 
-        kids.moveKidByPosition("934", (byte)2);
+        //kids.moveKidByPosition("934", (byte)2);
 
         //kids.addToStart(new Kid("967","Estefania",(byte)6));
 
         //kids.addToXPosition(new Kid("456","Pepe",(byte)7), (byte)3);
 
-        //ids.deleteKidByIdentification("123");
+        //kids.deleteKidByIdentification("256");
 
     }
 
@@ -39,4 +39,13 @@ public class ListSEService {
     {
         return kids.getHead();
     }
+    public void addKid(Kid kid) { kids.add(kid); }
+    public void addToStartKid(Kid kid) { kids.addToStart(kid); }
+    public void addToXPositionKid(Kid kid, byte position) { kids.addToXPosition(kid, position); }
+    public void deletebyIdentification(String identification) { kids.deleteKidByIdentification(identification); }
+    public void deleteByAge(byte age) { kids.deleteKidsByAge(age); }
+    public void moveByPosition(String identification, byte position) {
+        kids.moveKidByPosition(identification, position); }
+    public String compareId(String identification) { return kids.compareIdKids(identification); }
+    public String compareAge(byte age) { return kids.compareAgeKids(age); }
 }
