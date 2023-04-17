@@ -1,10 +1,15 @@
 package co.edu.umanizales.tads2.service;
 
+import co.edu.umanizales.tads2.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads2.model.Kid;
 import co.edu.umanizales.tads2.model.ListSE;
+import co.edu.umanizales.tads2.model.Location;
 import co.edu.umanizales.tads2.model.Node;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Data
@@ -35,10 +40,7 @@ public class ListSEService {
 
     }
 
-    public Node getKids()
-    {
-        return kids.getHead();
-    }
+    public Node getKids() { return kids.getHead(); }
     public void addKid(Kid kid) { kids.add(kid); }
     public void addToStartKid(Kid kid) { kids.addToStart(kid); }
     public void addToXPositionKid(Kid kid, byte position) { kids.addToXPosition(kid, position); }
@@ -48,4 +50,24 @@ public class ListSEService {
         kids.moveKidByPosition(identification, position); }
     public String compareId(String identification) { return kids.compareIdKids(identification); }
     public String compareAge(byte age) { return kids.compareAgeKids(age); }
+    public void invertKids(){
+        kids.invert();
+    }
+    public void changeExtremesKids(){ kids.changeExtremes(); }
+
+    public List<KidsByLocationDTO> getLocationInform(List<Location> locations) {
+
+        if (kids.getHead() == null) {
+            return null;
+        }
+
+        List<KidsByLocationDTO> listKidsLocation = new ArrayList<>();
+
+        for (Location location:locations)
+        {
+            listKidsLocation.add(kids.addLocationListSE(location));
+        }
+
+        return listKidsLocation;
+    }
 }

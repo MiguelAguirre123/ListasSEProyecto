@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads2.model;
 
+import co.edu.umanizales.tads2.controller.dto.KidsByLocationDTO;
 import lombok.Data;
 
 @Data
@@ -363,5 +364,58 @@ public class ListSE {
         else{
             return null;
         }
+    }
+
+    public KidsByLocationDTO addLocationListSE(Location location) {
+        if (head != null) {
+            Node temp = head;
+            int quantity = 0;
+            KidsByLocationDTO kidByLocationDTO = new KidsByLocationDTO(location, 0);
+
+            if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode())) {
+                quantity++;
+            }
+
+            while (temp.getNext() != null) {
+                temp = temp.getNext();
+                if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode())) {
+                    quantity++;
+                }
+            }
+
+            kidByLocationDTO.setQuantity(quantity);
+
+            return kidByLocationDTO;
+        }
+
+        return null;
+    }
+
+    public void invert(){
+        if(this.head !=null){
+            ListSE listCp = new ListSE();
+            Node temp = this.head;
+            while(temp != null){
+                listCp.addToStart(temp.getData());
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+
+    public void changeExtremes(){
+        if(this.head !=null && this.head.getNext() !=null)
+        {
+            Node temp = this.head;
+            while(temp.getNext()!=null)
+            {
+                temp = temp.getNext();
+            }
+            //temp está en el último
+            Kid copy = this.head.getData();
+            this.head.setData(temp.getData());
+            temp.setData(copy);
+        }
+
     }
 }
