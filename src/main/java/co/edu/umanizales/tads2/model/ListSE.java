@@ -1,7 +1,11 @@
 package co.edu.umanizales.tads2.model;
 
 import co.edu.umanizales.tads2.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads2.controller.dto.QuantityKidByLocationDTO;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class ListSE {
@@ -366,19 +370,19 @@ public class ListSE {
         }
     }
 
-    public KidsByLocationDTO addLocationListSE(Location location) {
+    public KidsByLocationDTO addLocationListSE(Location location, byte age) {
         if (head != null) {
             Node temp = head;
             int quantity = 0;
             KidsByLocationDTO kidByLocationDTO = new KidsByLocationDTO(location, 0);
 
-            if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode())) {
+            if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode()) && temp.getData().getAge() > age) {
                 quantity++;
             }
 
             while (temp.getNext() != null) {
                 temp = temp.getNext();
-                if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode())) {
+                if (temp.getData().getLocation().getCode().substring(0, location.getCode().length()).equals(location.getCode()) && temp.getData().getAge() > age) {
                     quantity++;
                 }
             }
@@ -418,4 +422,105 @@ public class ListSE {
         }
 
     }
+
+    public void orderBoysToStart(){
+        if(this.head !=null){
+            ListSE listCp = new ListSE();
+            Node temp = this.head;
+            while(temp != null){
+                if(temp.getData().getGender()=='M')
+                {
+                    listCp.addToStart(temp.getData());
+                }
+                else{
+                    listCp.add(temp.getData());
+                }
+
+                temp = temp.getNext();
+            }
+            this.head = listCp.getHead();
+        }
+    }
+
+    public float getAverage() {
+        float average = 0;
+        if (head != null) {
+            Node temp = head;
+            float quantity = temp.getData().getAge();
+            float position = 1;
+
+            while (temp.getNext() != null) {
+                temp = temp.getNext();
+                position ++;
+                quantity += temp.getData().getAge();
+            }
+
+            return average = quantity/position;
+        }
+
+        return  average;
+    }
+
+    public List<QuantityKidByLocationDTO> countKidByLocationAndAge(byte age, String code) {
+        if (this.head != null) {
+            List<QuantityKidByLocationDTO> listQuantityKidByLocationDTO = new ArrayList<>();
+            char gender = 'M';
+
+            for (byte i = 1; i <= 2; i++) {
+                Node temp = head;
+                int quantity = 0;
+
+                if (i == 2) {
+                    gender = 'F';
+                }
+
+                if (temp.getData().getLocation().getCode().substring(0, code.length()).equals(code)
+                        && temp.getData().getAge() > age && gender == temp.getData().getGender()) {
+                    quantity++;
+                }
+
+                while (temp.getNext() != null) {
+                    temp = temp.getNext();
+                    if (temp.getData().getLocation().getCode().substring(0, code.length()).equals(code)
+                            && temp.getData().getAge() > age && gender == temp.getData().getGender()) {
+                        quantity++;
+                    }
+                }
+
+                QuantityKidByLocationDTO quantityKidByLocationDTO = new QuantityKidByLocationDTO(gender, quantity);
+                listQuantityKidByLocationDTO.add(quantityKidByLocationDTO);
+            }
+
+            return listQuantityKidByLocationDTO;
+        }
+
+        return null;
+
+    }
+
+    /*
+    public float intercaleBoysAndGirls() {
+        float average = 0;
+        if (head != null) {
+            ListSE listboys = new ListSE();
+            ListSE listgirls = new ListSE();
+            Node temp = head;
+
+            if (temp.getData().getGender()=='M') {
+                listboys.head
+            }
+
+            while (temp.getNext() != null) {
+                temp = temp.getNext();
+                position ++;
+                quantity += temp.getData().getAge();
+            }
+
+            return average = quantity/position;
+        }
+
+        return  average;
+    }
+
+     */
 }

@@ -1,6 +1,8 @@
 package co.edu.umanizales.tads2.service;
 
+import co.edu.umanizales.tads2.controller.dto.InformLocationAgeTotalDTO;
 import co.edu.umanizales.tads2.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads2.controller.dto.QuantityKidByLocationDTO;
 import co.edu.umanizales.tads2.model.Kid;
 import co.edu.umanizales.tads2.model.ListSE;
 import co.edu.umanizales.tads2.model.Location;
@@ -54,8 +56,10 @@ public class ListSEService {
         kids.invert();
     }
     public void changeExtremesKids(){ kids.changeExtremes(); }
-
-    public List<KidsByLocationDTO> getLocationInform(List<Location> locations) {
+    public void orderBoysToStartKids(){ kids.orderBoysToStart(); }
+    public float getAverageKids(){ return kids.getAverage(); }
+    public List<QuantityKidByLocationDTO> countKidByLocationAndAgeList(byte age, String code) { return kids.countKidByLocationAndAge(age, code); }
+    public List<KidsByLocationDTO> getLocationInform(List<Location> locations, byte age) {
 
         if (kids.getHead() == null) {
             return null;
@@ -65,7 +69,7 @@ public class ListSEService {
 
         for (Location location:locations)
         {
-            listKidsLocation.add(kids.addLocationListSE(location));
+            listKidsLocation.add(kids.addLocationListSE(location, age));
         }
 
         return listKidsLocation;
