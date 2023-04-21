@@ -42,7 +42,7 @@ public class ListSEController {
         }
         if(listSEService.compareId(kidDTO.getIdentification()) != null){
             return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay ningun niño con esa ID", null), HttpStatus.OK);
+                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
         }
         listSEService.addKid(
                 new Kid(kidDTO.getIdentification(),
@@ -64,7 +64,7 @@ public class ListSEController {
         }
         if(listSEService.compareId(kidDTO.getIdentification()) != null){
             return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay ningun niño con esa ID", null), HttpStatus.OK);
+                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
         }
         listSEService.addToStartKid(
                 new Kid(kidDTO.getIdentification(),
@@ -84,7 +84,7 @@ public class ListSEController {
         }
         if(listSEService.compareId(changePositionKidDTO.getKidDTO().getIdentification()) != null){
             return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay ningun niño con esa ID", null), HttpStatus.OK);
+                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
         }
         listSEService.addToXPositionKid(
                 new Kid(changePositionKidDTO.getKidDTO().getIdentification(),

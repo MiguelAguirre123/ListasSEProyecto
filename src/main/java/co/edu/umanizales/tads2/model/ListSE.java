@@ -463,33 +463,39 @@ public class ListSE {
 
     public List<QuantityKidByLocationDTO> countKidByLocationAndAge(byte age, String code) {
         if (this.head != null) {
+            Node temp = head;
             List<QuantityKidByLocationDTO> listQuantityKidByLocationDTO = new ArrayList<>();
-            char gender = 'M';
+            int quantityMales = 0;
+            int quantityFemales = 0;
 
-            for (byte i = 1; i <= 2; i++) {
-                Node temp = head;
-                int quantity = 0;
-
-                if (i == 2) {
-                    gender = 'F';
+            if (temp.getData().getLocation().getCode().substring(0, code.length()).equals(code)
+                    && temp.getData().getAge() > age) {
+                if (temp.getData().getGender() == 'M') {
+                    quantityMales++;
                 }
+                else {
+                    quantityFemales++;
+                }
+            }
 
+            while (temp.getNext() != null) {
+                temp = temp.getNext();
                 if (temp.getData().getLocation().getCode().substring(0, code.length()).equals(code)
-                        && temp.getData().getAge() > age && gender == temp.getData().getGender()) {
-                    quantity++;
-                }
-
-                while (temp.getNext() != null) {
-                    temp = temp.getNext();
-                    if (temp.getData().getLocation().getCode().substring(0, code.length()).equals(code)
-                            && temp.getData().getAge() > age && gender == temp.getData().getGender()) {
-                        quantity++;
+                        && temp.getData().getAge() > age) {
+                    if (temp.getData().getGender() == 'M') {
+                        quantityMales++;
+                    }
+                    else {
+                        quantityFemales++;
                     }
                 }
-
-                QuantityKidByLocationDTO quantityKidByLocationDTO = new QuantityKidByLocationDTO(gender, quantity);
-                listQuantityKidByLocationDTO.add(quantityKidByLocationDTO);
             }
+
+            QuantityKidByLocationDTO quantityKidByLocationDTOMales = new QuantityKidByLocationDTO('M', quantityMales);
+            listQuantityKidByLocationDTO.add(quantityKidByLocationDTOMales);
+            QuantityKidByLocationDTO quantityKidByLocationDTOFemales = new QuantityKidByLocationDTO('F', quantityFemales);
+            listQuantityKidByLocationDTO.add(quantityKidByLocationDTOFemales);
+
 
             return listQuantityKidByLocationDTO;
         }
