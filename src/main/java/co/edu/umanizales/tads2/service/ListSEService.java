@@ -46,10 +46,12 @@ public class ListSEService {
     public void addKid(Kid kid) { kids.add(kid); }
     public void addToStartKid(Kid kid) { kids.addToStart(kid); }
     public void addToXPositionKid(Kid kid, byte position) { kids.addToXPosition(kid, position); }
-    public void deletebyIdentification(String identification) { kids.deleteKidByIdentification(identification); }
+    public void deleteByIdentification(String identification) { kids.deleteKidByIdentification(identification); }
     public void deleteByAge(byte age) { kids.deleteKidsByAge(age); }
-    public void moveByPosition(String identification, byte position) {
-        kids.moveKidByPosition(identification, position); }
+    public void goUpByPosition(String identification, byte position) {
+        kids.goUpKidByIdentification(identification, position); }
+    public void goDownByPosition(String identification, byte position) {
+        kids.goDownKidByIdentification(identification, position); }
     public String compareId(String identification) { return kids.compareIdKids(identification); }
     public String compareAge(byte age) { return kids.compareAgeKids(age); }
     public void invertKids(){
@@ -59,6 +61,8 @@ public class ListSEService {
     public void orderBoysToStartKids(){ kids.orderBoysToStart(); }
     public float getAverageKids(){ return kids.getAverage(); }
     public List<QuantityKidByLocationDTO> countKidByLocationAndAgeList(byte age, String code) { return kids.countKidByLocationAndAge(age, code); }
+    public void intercaleBoysAndGirlsKids() { kids.intercaleBoysAndGirls(); }
+    public int countKidsByAges(int min, int max) { return kids.countKidsByAge(min, max); }
     public List<KidsByLocationDTO> getLocationInform(List<Location> locations, byte age) {
 
         if (kids.getHead() == null) {

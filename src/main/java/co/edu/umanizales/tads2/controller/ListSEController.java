@@ -3,8 +3,10 @@ package co.edu.umanizales.tads2.controller;
 import co.edu.umanizales.tads2.controller.dto.*;
 import co.edu.umanizales.tads2.model.Kid;
 import co.edu.umanizales.tads2.model.Location;
+import co.edu.umanizales.tads2.model.RangeAge;
 import co.edu.umanizales.tads2.service.ListSEService;
 import co.edu.umanizales.tads2.service.LocationService;
+import co.edu.umanizales.tads2.service.RangeAgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class ListSEController {
     private ListSEService listSEService;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private RangeAgeService rangeAgeService;
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getKidsList(){
@@ -100,7 +104,7 @@ public class ListSEController {
             return new ResponseEntity<>(new ResponseDTO(
                     404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
         }
-        listSEService.deletebyIdentification(code);
+        listSEService.deleteByIdentification(code);
         return new ResponseEntity<>(new ResponseDTO(
                 200, "Niño Eliminado", null), HttpStatus.OK);
     }
@@ -116,16 +120,28 @@ public class ListSEController {
                 200, "Niños que tienen " + age + " años eliminados", null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/movekidbyposition")
-    public ResponseEntity<ResponseDTO> moveKidByPositionList(@RequestBody MovePositionKidDTO movePositionKidDTO){
+    @GetMapping(path = "/goupkidbyposition")
+    public ResponseEntity<ResponseDTO> goUpKidByPositionList(@RequestBody MovePositionKidDTO movePositionKidDTO){
         if(listSEService.compareId(movePositionKidDTO.getCode()) == null){
             return new ResponseEntity<>(new ResponseDTO(
                     404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
         }
-        listSEService.moveByPosition(
+        listSEService.goUpByPosition(
                 movePositionKidDTO.getCode(), movePositionKidDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
-                200,"Niño movido en la posicion especificada",null), HttpStatus.OK);
+                200,"Niño subido en la posicion especificada",null), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/godownkidbyposition")
+    public ResponseEntity<ResponseDTO> goDownKidByPositionList(@RequestBody MovePositionKidDTO movePositionKidDTO){
+        if(listSEService.compareId(movePositionKidDTO.getCode()) == null){
+            return new ResponseEntity<>(new ResponseDTO(
+                    404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
+        }
+        listSEService.goDownByPosition(
+                movePositionKidDTO.getCode(), movePositionKidDTO.getPosition());
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"Niño bajado en la posicion especificada",null), HttpStatus.OK);
     }
 
     @GetMapping(path = "/kidslocationcityinform")
@@ -233,5 +249,34 @@ public class ListSEController {
         return new ResponseEntity<>(new ResponseDTO(
                 200,informLocationAgeTotalDTOList,
                 null), HttpStatus.OK);
+    }
+    @GetMapping(path = "/intercalekidsandgirls")
+    public ResponseEntity<ResponseDTO> intercaleBoysAndGirlsList(){
+        if(listSEService.getKids() == null){
+            return new ResponseEntity<>(new ResponseDTO(
+                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        }
+
+        listSEService.intercaleBoysAndGirlsKids();
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"Niños Intercalados",null), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/rangebyage")
+
+    public ResponseEntity<ResponseDTO> getRangeByKidsInform() {
+        if(listSEService.getKids() == null){
+            return new ResponseEntity<>(new ResponseDTO(
+                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        }
+
+        List<RangeAgeKidsDTO>  kidsRangeDTOList = new ArrayList<>();
+
+        for (RangeAge rangeAge : rangeAgeService.getRanges()) {
+            int quantity = listSEService.countKidsByAges(rangeAge.getFrom(), rangeAge.getTo());
+            kidsRangeDTOList.add(new RangeAgeKidsDTO(rangeAge, quantity));
+        }
+
+        return new ResponseEntity<>(new ResponseDTO(200, kidsRangeDTOList, null), HttpStatus.OK);
     }
 }

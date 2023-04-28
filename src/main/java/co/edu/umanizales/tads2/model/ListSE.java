@@ -27,18 +27,16 @@ public class ListSE {
     no
         metemos el niño en el costal y ese costal es la cabeza
      */
-    public void add(Kid kid){
-        if(head != null){
+    public void add(Kid kid) {
+        if (head != null) {
             Node temp = head;
-            while(temp.getNext() !=null)
-            {
+            while (temp.getNext() != null) {
                 temp = temp.getNext();
             }
             /// Parado en el último
             Node newNode = new Node(kid);
             temp.setNext(newNode);
-        }
-        else {
+        } else {
             head = new Node(kid);
         }
     }
@@ -52,14 +50,12 @@ public class ListSE {
     no
         meto el niño en un costal y lo asigno a la cabez
      */
-    public void addToStart(Kid kid){
-        if(head !=null)
-        {
+    public void addToStart(Kid kid) {
+        if (head != null) {
             Node newNode = new Node(kid);
             newNode.setNext(head);
             head = newNode;
-        }
-        else {
+        } else {
             head = new Node(kid);
         }
     }
@@ -87,8 +83,8 @@ public class ListSE {
     no
         meto el niño en un costal y lo asigno a la cabeza
      */
-    public void addToXPosition(Kid kid, byte position){
-        if(head != null) {
+    public void addToXPosition(Kid kid, byte position) {
+        if (head != null) {
             Node temp = head;
             Node newNode = new Node(kid);
 
@@ -107,8 +103,7 @@ public class ListSE {
                 newNode.setNext(temp.getNext());
                 temp.setNext(newNode);
             }
-        }
-        else{
+        } else {
             head = new Node(kid);
         }
     }
@@ -185,19 +180,18 @@ public class ListSE {
         no
             no se hace nada
      */
-    public void deleteKidByIdentification(String identification){
-        if(head !=null){
+    public void deleteKidByIdentification(String identification) {
+        if (head != null) {
             Node temp = head;
 
-            if(temp.getData().getIdentification().equalsIgnoreCase(identification)){
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
                 temp = temp.getNext();
                 head = temp;
-            }
-            else{
-                if(temp.getNext() != null){
-                    while(!temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)){
+            } else {
+                if (temp.getNext() != null) {
+                    while (!temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                         temp = temp.getNext();
-                        if(temp.getNext() == null){
+                        if (temp.getNext() == null) {
                             return;
                         }
                     }
@@ -206,6 +200,7 @@ public class ListSE {
             }
         }
     }
+
     /*
     public void deleteKidByIdentification(String identification){
         if(head !=null)
@@ -253,42 +248,42 @@ public class ListSE {
         }
     }
     */
-    public void deleteKidsByAge(byte age){
-        if(head != null){
-             ListSE newList = new ListSE();
+    public void deleteKidsByAge(byte age) {
+        if (head != null) {
+            ListSE newList = new ListSE();
             Node temp = head;
 
-            while(temp.getData() != null){
-                if(temp.getData().getAge() != age){
+            while (temp.getData() != null) {
+                if (temp.getData().getAge() != age) {
                     newList.add(temp.getData());
                 }
-                if(temp.getNext() == null){
+                if (temp.getNext() == null) {
                     break;
-                }
-                else{
+                } else {
                     temp = temp.getNext();
                 }
             }
             head = newList.getHead();
         }
     }
+
+    /*
     public void moveKidByPosition(String identification, byte position) {
-        if (head != null){
+        if (head != null) {
             byte positionTemp = 1;
             Node temp = head;
             Kid kidById = null;
 
-            if(temp.getNext() == null || position == 0){
+            if (temp.getNext() == null || position == 0) {
                 return;
             }
 
-            if(position < 0 && (temp.getData().getIdentification().equalsIgnoreCase(identification))){
+            if (position < 0 && (temp.getData().getIdentification().equalsIgnoreCase(identification))) {
                 kidById = temp.getData();
                 temp = temp.getNext();
                 head = temp;
                 positionTemp = 0;
-            }
-            else {
+            } else {
                 while (temp.getNext() != null) {
                     if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                         kidById = temp.getNext().getData();
@@ -304,17 +299,16 @@ public class ListSE {
                 }
             }
 
-            byte restaPosition = (byte)(positionTemp - position);
+            byte restaPosition = (byte) (positionTemp - position);
 
-            if(restaPosition < 1){
+            if (restaPosition < 1) {
                 Node newNode = new Node(kidById);
                 newNode.setNext(head);
                 head = newNode;
-            }
-            else{
+            } else {
                 temp = head;
-                for(byte i = 1; i < restaPosition; i++){
-                    if(temp.getNext() == null){
+                for (byte i = 1; i < restaPosition; i++) {
+                    if (temp.getNext() == null) {
                         break;
                     }
                     temp = temp.getNext();
@@ -323,6 +317,69 @@ public class ListSE {
                 newNode.setNext(temp.getNext());
                 temp.setNext(newNode);
             }
+        }
+    }
+     */
+
+    public void goUpKidByIdentification(String identification, byte position) {
+        if (head != null) {
+            byte positionKid = 1;
+            Node temp = head;
+            Kid kidByPosition = null;
+
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification) ||
+                    compareIdKids(identification) == null || temp.getNext() == null) {
+                return;
+            }
+
+            while (temp.getNext() != null) {
+                if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
+                    kidByPosition = temp.getNext().getData();
+                    temp.setNext(temp.getNext().getNext());
+                    positionKid++;
+                    break;
+                }
+                temp = temp.getNext();
+                positionKid++;
+            }
+
+            byte positionFinal = (byte)(positionKid - position);
+            addToXPosition(kidByPosition, positionFinal);
+        }
+    }
+
+    public void goDownKidByIdentification(String identification, byte position) {
+        if (head != null) {
+            byte positionKid = 1;
+            Node temp = head;
+            Kid kidByPosition = null;
+
+            if (compareIdKids(identification) == null || temp.getData() == null) {
+                return;
+            }
+
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                kidByPosition = temp.getData();
+                head = temp.getNext();
+            }
+            else {
+                while (temp.getNext() != null) {
+                    if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
+                        kidByPosition = temp.getNext().getData();
+                        temp.setNext(temp.getNext().getNext());
+                        positionKid++;
+                        break;
+                    }
+                    temp = temp.getNext();
+                    if (temp.getNext().getNext() == null) {
+                        return;
+                    }
+                    positionKid++;
+                }
+            }
+
+            byte positionFinal = (byte)(positionKid + position);
+            addToXPosition(kidByPosition, positionFinal);
         }
     }
 
@@ -342,9 +399,8 @@ public class ListSE {
             }
 
             return null;
-        }
-        else{
-            return  null;
+        } else {
+            return null;
         }
     }
 
@@ -364,8 +420,7 @@ public class ListSE {
             }
 
             return null;
-        }
-        else{
+        } else {
             return null;
         }
     }
@@ -395,11 +450,11 @@ public class ListSE {
         return null;
     }
 
-    public void invert(){
-        if(this.head !=null){
+    public void invert() {
+        if (this.head != null) {
             ListSE listCp = new ListSE();
             Node temp = this.head;
-            while(temp != null){
+            while (temp != null) {
                 listCp.addToStart(temp.getData());
                 temp = temp.getNext();
             }
@@ -407,12 +462,10 @@ public class ListSE {
         }
     }
 
-    public void changeExtremes(){
-        if(this.head !=null && this.head.getNext() !=null)
-        {
+    public void changeExtremes() {
+        if (this.head != null && this.head.getNext() != null) {
             Node temp = this.head;
-            while(temp.getNext()!=null)
-            {
+            while (temp.getNext() != null) {
                 temp = temp.getNext();
             }
             //temp está en el último
@@ -423,16 +476,14 @@ public class ListSE {
 
     }
 
-    public void orderBoysToStart(){
-        if(this.head !=null){
+    public void orderBoysToStart() {
+        if (this.head != null) {
             ListSE listCp = new ListSE();
             Node temp = this.head;
-            while(temp != null){
-                if(temp.getData().getGender()=='M')
-                {
+            while (temp != null) {
+                if (temp.getData().getGender() == 'M') {
                     listCp.addToStart(temp.getData());
-                }
-                else{
+                } else {
                     listCp.add(temp.getData());
                 }
 
@@ -451,14 +502,14 @@ public class ListSE {
 
             while (temp.getNext() != null) {
                 temp = temp.getNext();
-                position ++;
+                position++;
                 quantity += temp.getData().getAge();
             }
 
-            return average = quantity/position;
+            return average = quantity / position;
         }
 
-        return  average;
+        return average;
     }
 
     public List<QuantityKidByLocationDTO> countKidByLocationAndAge(byte age, String code) {
@@ -472,8 +523,7 @@ public class ListSE {
                     && temp.getData().getAge() > age) {
                 if (temp.getData().getGender() == 'M') {
                     quantityMales++;
-                }
-                else {
+                } else {
                     quantityFemales++;
                 }
             }
@@ -484,8 +534,7 @@ public class ListSE {
                         && temp.getData().getAge() > age) {
                     if (temp.getData().getGender() == 'M') {
                         quantityMales++;
-                    }
-                    else {
+                    } else {
                         quantityFemales++;
                     }
                 }
@@ -504,29 +553,63 @@ public class ListSE {
 
     }
 
-    /*
-    public float intercaleBoysAndGirls() {
-        float average = 0;
+    public void intercaleBoysAndGirls() {
         if (head != null) {
-            ListSE listboys = new ListSE();
-            ListSE listgirls = new ListSE();
             Node temp = head;
+            ListSE listBoys = new ListSE();
+            int quantityFemale = 0;
 
-            if (temp.getData().getGender()=='M') {
-                listboys.head
+            if (temp.getData().getGender() == 'M') {
+                listBoys.add(temp.getData());
+            } else {
+                quantityFemale++;
             }
 
             while (temp.getNext() != null) {
                 temp = temp.getNext();
-                position ++;
-                quantity += temp.getData().getAge();
+                if (temp.getData().getGender() == 'M') {
+                    listBoys.add(temp.getData());
+                } else {
+                    quantityFemale++;
+                }
             }
 
-            return average = quantity/position;
-        }
+            if (quantityFemale == 0 || listBoys.head == null) {
+                return;
+            }
 
-        return  average;
+            temp = head;
+            Node temp2 = listBoys.head;
+
+            while (quantityFemale != 0) {
+                if (temp.getData().getGender() == 'F') {
+                    Node newNode = new Node(temp.getData());
+                    newNode.setNext(temp2.getNext());
+                    temp2.setNext(newNode);
+                    if (temp2.getNext().getNext() == null) {
+                        temp2 = temp2.getNext();
+                    } else {
+                        temp2 = temp2.getNext().getNext();
+                    }
+                    quantityFemale--;
+                }
+                temp = temp.getNext();
+            }
+
+            head = listBoys.getHead();
+        }
     }
 
-     */
+    public int countKidsByAge(int min, int max) {
+        Node temp = head;
+        int counter = 0;
+        while (temp != null) {
+            if (temp.getData().getAge() >= min && temp.getData().getAge() <= max) {
+                counter++;
+            }
+            temp = temp.getNext();
+        }
+
+        return counter;
+    }
 }
