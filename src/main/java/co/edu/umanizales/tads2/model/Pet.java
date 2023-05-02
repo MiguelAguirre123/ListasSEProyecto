@@ -8,10 +8,10 @@ import lombok.Data;
 public class Pet {
     private String identification;
     private String name;
-    /*
+    private byte age;
+    private char gender;
     private String typePet;
     private String weight;
     private String height;
-    private int veterinaryVisits;
-     */
+    private Location location;
 }

@@ -80,20 +80,20 @@ public class ListSEController {
 
     @PostMapping(path = "/addtoxposition")
     public ResponseEntity<ResponseDTO> addToXPositionKidList(@RequestBody ChangePositionKidDTO changePositionKidDTO){
-        Location location = locationService.getLocationByCode(changePositionKidDTO.getKidDTO().getCodeLocation());
+        Location location = locationService.getLocationByCode(changePositionKidDTO.getCodeLocation());
         if(location == null){
             return new ResponseEntity<>(new ResponseDTO(
                     404,"La ubicación no existe",
                     null), HttpStatus.OK);
         }
-        if(listSEService.compareId(changePositionKidDTO.getKidDTO().getIdentification()) != null){
+        if(listSEService.compareId(changePositionKidDTO.getIdentification()) != null){
             return new ResponseEntity<>(new ResponseDTO(
                     404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
         }
         listSEService.addToXPositionKid(
-                new Kid(changePositionKidDTO.getKidDTO().getIdentification(),
-                        changePositionKidDTO.getKidDTO().getName(), changePositionKidDTO.getKidDTO().getAge(),
-                        changePositionKidDTO.getKidDTO().getGender(), location), changePositionKidDTO.getPosition());
+                new Kid(changePositionKidDTO.getIdentification(),
+                        changePositionKidDTO.getName(), changePositionKidDTO.getAge(),
+                        changePositionKidDTO.getGender(), location), changePositionKidDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Niño agregado en la posicion especificada",null), HttpStatus.OK);
     }
@@ -179,6 +179,7 @@ public class ListSEController {
         return new ResponseEntity<>(new ResponseDTO(
                 200, listSEService.getLocationInform(locationsCountries, (byte) -1),null), HttpStatus.OK);
     }
+
     @GetMapping("/invert")
     public ResponseEntity<ResponseDTO> invert(){
         if(listSEService.getKids() == null){
@@ -250,7 +251,7 @@ public class ListSEController {
                 200,informLocationAgeTotalDTOList,
                 null), HttpStatus.OK);
     }
-    @GetMapping(path = "/intercalekidsandgirls")
+    @GetMapping(path = "/intercaleboysandgirls")
     public ResponseEntity<ResponseDTO> intercaleBoysAndGirlsList(){
         if(listSEService.getKids() == null){
             return new ResponseEntity<>(new ResponseDTO(
@@ -263,14 +264,12 @@ public class ListSEController {
     }
 
     @GetMapping(path = "/rangebyage")
-
     public ResponseEntity<ResponseDTO> getRangeByKidsInform() {
+        List<RangeAgeKidsDTO>  kidsRangeDTOList = new ArrayList<>();
         if(listSEService.getKids() == null){
             return new ResponseEntity<>(new ResponseDTO(
                     404, "No hay ningun niño agregado", null), HttpStatus.OK);
         }
-
-        List<RangeAgeKidsDTO>  kidsRangeDTOList = new ArrayList<>();
 
         for (RangeAge rangeAge : rangeAgeService.getRanges()) {
             int quantity = listSEService.countKidsByAges(rangeAge.getFrom(), rangeAge.getTo());

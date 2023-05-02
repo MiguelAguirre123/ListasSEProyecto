@@ -6,6 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ChangePositionKidDTO {
-    private KidDTO kidDTO;
+    private String identification;
+    private String name;
+    private byte age;
+    private char gender;
+    private String codeLocation;
     private byte position;
 }

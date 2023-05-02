@@ -180,6 +180,7 @@ public class ListSE {
         no
             no se hace nada
      */
+
     public void deleteKidByIdentification(String identification) {
         if (head != null) {
             Node temp = head;
@@ -188,14 +189,12 @@ public class ListSE {
                 temp = temp.getNext();
                 head = temp;
             } else {
-                if (temp.getNext() != null) {
-                    while (!temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
-                        temp = temp.getNext();
-                        if (temp.getNext() == null) {
-                            return;
-                        }
+                while (temp.getNext() != null) {
+                    if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
+                        temp.setNext(temp.getNext().getNext());
+                        return;
                     }
-                    temp.setNext(temp.getNext().getNext());
+                    temp = temp.getNext();
                 }
             }
         }
@@ -327,8 +326,7 @@ public class ListSE {
             Node temp = head;
             Kid kidByPosition = null;
 
-            if (temp.getData().getIdentification().equalsIgnoreCase(identification) ||
-                    compareIdKids(identification) == null || temp.getNext() == null) {
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification) || temp.getNext() == null) {
                 return;
             }
 
@@ -354,7 +352,7 @@ public class ListSE {
             Node temp = head;
             Kid kidByPosition = null;
 
-            if (compareIdKids(identification) == null || temp.getData() == null) {
+            if (temp.getData() == null) {
                 return;
             }
 
@@ -388,19 +386,19 @@ public class ListSE {
             Node temp = head;
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
-                return "confirmado";
+                return null;
             } else {
                 while (temp.getNext() != null) {
                     temp = temp.getNext();
                     if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
-                        return "confirmado";
+                        return null;
                     }
                 }
             }
 
-            return null;
+            return "confirmado";
         } else {
-            return null;
+            return "confirmado";
         }
     }
 

@@ -64,11 +64,6 @@ public class ListSEService {
     public void intercaleBoysAndGirlsKids() { kids.intercaleBoysAndGirls(); }
     public int countKidsByAges(int min, int max) { return kids.countKidsByAge(min, max); }
     public List<KidsByLocationDTO> getLocationInform(List<Location> locations, byte age) {
-
-        if (kids.getHead() == null) {
-            return null;
-        }
-
         List<KidsByLocationDTO> listKidsLocation = new ArrayList<>();
 
         for (Location location:locations)
