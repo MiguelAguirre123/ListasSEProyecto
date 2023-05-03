@@ -223,7 +223,7 @@ public class ListDE {
             else {
                 while (temp.getNext() != null) {
                     if (temp.getNext().getNext() == null) {
-                        listErrors.add(new ErrorDTO(400, "La mascota esta en el ultimo saco por lo que no se puede desplazar hacia abajo"));
+                        listErrors.add(new ErrorDTO(400, "La mascota esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
                         throw new MyNullPointerException(listErrors);
                     }
                     if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {

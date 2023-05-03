@@ -1,5 +1,7 @@
 package co.edu.umanizales.tads2.model;
 
+import co.edu.umanizales.tads2.config.MyNullPointerException;
+import co.edu.umanizales.tads2.controller.dto.ErrorDTO;
 import co.edu.umanizales.tads2.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads2.controller.dto.QuantityKidByLocationDTO;
 import lombok.Data;
@@ -84,9 +86,11 @@ public class ListSE {
         meto el niño en un costal y lo asigno a la cabeza
      */
     public void addToXPosition(Kid kid, byte position) {
+        List<ErrorDTO> listErrors = new ArrayList<>();
         if (head != null) {
             Node temp = head;
             Node newNode = new Node(kid);
+            int positionTemp = 1;
 
             if (position <= 1) {
                 newNode.setNext(head);
@@ -94,16 +98,27 @@ public class ListSE {
             } else {
                 for (byte i = 1; i < position - 1; i++) {
                     if (temp.getNext() == null) {
-                        temp.setNext(newNode);
-                        return;
+                        if(positionTemp == position-1) {
+                            temp.setNext(newNode);
+                            return;
+                        }
+                        else {
+                            listErrors.add(new ErrorDTO(400, "La posicion no corresponde con el tamaño de la lista de niños"));
+                            throw new MyNullPointerException(listErrors);
+                        }
                     }
                     temp = temp.getNext();
+                    positionTemp++;
                 }
 
                 newNode.setNext(temp.getNext());
                 temp.setNext(newNode);
             }
         } else {
+            if (position != 1) {
+                listErrors.add(new ErrorDTO(400, "La posicion no corresponde con el tamaño de la lista de niños"));
+                throw new MyNullPointerException(listErrors);
+            }
             head = new Node(kid);
         }
     }
@@ -325,16 +340,27 @@ public class ListSE {
             byte positionKid = 1;
             Node temp = head;
             Kid kidByPosition = null;
+            List<ErrorDTO> listErrors = new ArrayList<>();
 
-            if (temp.getData().getIdentification().equalsIgnoreCase(identification) || temp.getNext() == null) {
-                return;
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                listErrors.add(new ErrorDTO(400, "El niño esta en cabeza por lo que no se puede desplazar hacia arriba"));
+            }
+            if (temp.getNext() == null) {
+                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia arriba"));
+            }
+            if (listErrors.size() != 0) {
+                throw new MyNullPointerException(listErrors);
             }
 
             while (temp.getNext() != null) {
                 if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
+                    positionKid++;
+                    if (positionKid <= position) {
+                        listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                        throw new MyNullPointerException(listErrors);
+                    }
                     kidByPosition = temp.getNext().getData();
                     temp.setNext(temp.getNext().getNext());
-                    positionKid++;
                     break;
                 }
                 temp = temp.getNext();
@@ -349,29 +375,48 @@ public class ListSE {
     public void goDownKidByIdentification(String identification, byte position) {
         if (head != null) {
             byte positionKid = 1;
+            int sizeList = 1;
             Node temp = head;
             Kid kidByPosition = null;
+            List<ErrorDTO> listErrors = new ArrayList<>();
 
-            if (temp.getData() == null) {
-                return;
+            if (temp.getNext() == null) {
+                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia abajo"));
+                throw new MyNullPointerException(listErrors);
+            }
+            else {
+                while (temp.getNext() != null) {
+                    sizeList++;
+                    temp = temp.getNext();
+                }
+                temp = head;
             }
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                if ((sizeList - positionKid) < (position)) {
+                    listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                    throw new MyNullPointerException(listErrors);
+                }
                 kidByPosition = temp.getData();
                 head = temp.getNext();
             }
             else {
                 while (temp.getNext() != null) {
+                    if (temp.getNext().getNext() == null) {
+                        listErrors.add(new ErrorDTO(400, "El niño esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
+                        throw new MyNullPointerException(listErrors);
+                    }
                     if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
+                        positionKid++;
+                        if ((sizeList - positionKid) < (position)) {
+                            listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                            throw new MyNullPointerException(listErrors);
+                        }
                         kidByPosition = temp.getNext().getData();
                         temp.setNext(temp.getNext().getNext());
-                        positionKid++;
                         break;
                     }
                     temp = temp.getNext();
-                    if (temp.getNext().getNext() == null) {
-                        return;
-                    }
                     positionKid++;
                 }
             }

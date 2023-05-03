@@ -42,7 +42,13 @@ public class ListSEService {
 
     }
 
-    public Node getKids() { return kids.getHead(); }
+    public Node getKids() {
+        if(kids.getHead() != null) {
+            return kids.getHead();
+        } else {
+            throw new NullPointerException();
+        }
+    }
     public void addKid(Kid kid) { kids.add(kid); }
     public void addToStartKid(Kid kid) { kids.addToStart(kid); }
     public void addToXPositionKid(Kid kid, byte position) { kids.addToXPosition(kid, position); }

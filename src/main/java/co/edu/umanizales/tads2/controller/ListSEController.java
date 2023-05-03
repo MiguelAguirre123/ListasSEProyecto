@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads2.controller;
 
+import co.edu.umanizales.tads2.config.MyNullPointerException;
 import co.edu.umanizales.tads2.controller.dto.*;
 import co.edu.umanizales.tads2.model.Kid;
 import co.edu.umanizales.tads2.model.Location;
@@ -7,6 +8,7 @@ import co.edu.umanizales.tads2.model.RangeAge;
 import co.edu.umanizales.tads2.service.ListSEService;
 import co.edu.umanizales.tads2.service.LocationService;
 import co.edu.umanizales.tads2.service.RangeAgeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/listse")
@@ -27,31 +30,46 @@ public class ListSEController {
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getKidsList(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         return new ResponseEntity<>(new ResponseDTO(
                 200,listSEService.getKids(),null), HttpStatus.OK);
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<ResponseDTO> addKidList(@RequestBody KidDTO kidDTO){
+    public ResponseEntity<ResponseDTO> addKidList(@Valid @RequestBody KidDTO kidDTO){
+        List<ErrorDTO> errorsList = new ArrayList<>();
         Location location = locationService.getLocationByCode(kidDTO.getCodeLocation());
-        if(location == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"La ubicación no existe",
-                    null), HttpStatus.OK);
+        try {
+            location.toString();
         }
-        if(listSEService.compareId(kidDTO.getIdentification()) != null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "La ubicación no existe"));
         }
+
+        try {
+            listSEService.compareId(kidDTO.getIdentification()).toString();
+        }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.addKid(
                 new Kid(kidDTO.getIdentification(),
                         kidDTO.getName(), kidDTO.getAge(),
-                        kidDTO.getGender(), location));
+                        kidDTO.getGender().charAt(0), location));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Niño Agregado",
                 null), HttpStatus.OK);
@@ -59,51 +77,76 @@ public class ListSEController {
     }
 
     @PostMapping(path = "/addtostart")
-    public ResponseEntity<ResponseDTO> addToStartKidList(@RequestBody KidDTO kidDTO){
+    public ResponseEntity<ResponseDTO> addToStartKidList(@Valid @RequestBody KidDTO kidDTO){
+        List<ErrorDTO> errorsList = new ArrayList<>();
         Location location = locationService.getLocationByCode(kidDTO.getCodeLocation());
-        if(location == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"La ubicación no existe",
-                    null), HttpStatus.OK);
+        try {
+            location.toString();
         }
-        if(listSEService.compareId(kidDTO.getIdentification()) != null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "La ubicación no existe"));
         }
+
+        try {
+            listSEService.compareId(kidDTO.getIdentification()).toString();
+        }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.addToStartKid(
                 new Kid(kidDTO.getIdentification(),
-                kidDTO.getName(), kidDTO.getAge(),
-                kidDTO.getGender(), location));
+                        kidDTO.getName(), kidDTO.getAge(),
+                        kidDTO.getGender().charAt(0), location));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Niño agregado al inicio",null), HttpStatus.OK);
     }
 
     @PostMapping(path = "/addtoxposition")
-    public ResponseEntity<ResponseDTO> addToXPositionKidList(@RequestBody ChangePositionKidDTO changePositionKidDTO){
+    public ResponseEntity<ResponseDTO> addToXPositionKidList(@Valid @RequestBody ChangePositionKidDTO changePositionKidDTO){
+        List<ErrorDTO> errorsList = new ArrayList<>();
         Location location = locationService.getLocationByCode(changePositionKidDTO.getCodeLocation());
-        if(location == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404,"La ubicación no existe",
-                    null), HttpStatus.OK);
+        try {
+            location.toString();
         }
-        if(listSEService.compareId(changePositionKidDTO.getIdentification()) != null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "Ya hay un niño con esa ID", null), HttpStatus.OK);
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "La ubicación no existe"));
         }
+
+        try {
+            listSEService.compareId(changePositionKidDTO.getIdentification()).toString();
+        }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.addToXPositionKid(
                 new Kid(changePositionKidDTO.getIdentification(),
                         changePositionKidDTO.getName(), changePositionKidDTO.getAge(),
-                        changePositionKidDTO.getGender(), location), changePositionKidDTO.getPosition());
+                        changePositionKidDTO.getGender().charAt(0), location), changePositionKidDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Niño agregado en la posicion especificada",null), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/deletebyidentification/{code}")
     public ResponseEntity<ResponseDTO> deleteKidByIdentificationList(@PathVariable String code){
-        if(listSEService.compareId(code) == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            Object str = listSEService.compareId(code);
+            Integer i = (Integer) str;
+        } catch (ClassCastException ex) {
+            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
         }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.deleteByIdentification(code);
         return new ResponseEntity<>(new ResponseDTO(
                 200, "Niño Eliminado", null), HttpStatus.OK);
@@ -111,21 +154,34 @@ public class ListSEController {
 
     @DeleteMapping(path = "/deletebyage/{age}")
     public ResponseEntity<ResponseDTO> deleteKidByAgeList(@PathVariable byte age){
-        if(listSEService.compareAge(age) == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño con esa edad", null), HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.compareAge(age).toString();
+        } catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(400, "No hay una ningun niño con esa edad"));
         }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.deleteByAge(age);
         return new ResponseEntity<>(new ResponseDTO(
                 200, "Niños que tienen " + age + " años eliminados", null), HttpStatus.OK);
     }
 
     @GetMapping(path = "/goupkidbyposition")
-    public ResponseEntity<ResponseDTO> goUpKidByPositionList(@RequestBody MovePositionKidDTO movePositionKidDTO){
-        if(listSEService.compareId(movePositionKidDTO.getCode()) == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseDTO> goUpKidByPositionList(@Valid @RequestBody MovePositionKidDTO movePositionKidDTO){
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            Object str = listSEService.compareId(movePositionKidDTO.getCode());
+            Integer i = (Integer) str;
+        } catch (ClassCastException ex) {
+            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
         }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.goUpByPosition(
                 movePositionKidDTO.getCode(), movePositionKidDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
@@ -133,11 +189,18 @@ public class ListSEController {
     }
 
     @GetMapping(path = "/godownkidbyposition")
-    public ResponseEntity<ResponseDTO> goDownKidByPositionList(@RequestBody MovePositionKidDTO movePositionKidDTO){
-        if(listSEService.compareId(movePositionKidDTO.getCode()) == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño con esa ID", null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseDTO> goDownKidByPositionList(@Valid @RequestBody MovePositionKidDTO movePositionKidDTO){
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            Object str = listSEService.compareId(movePositionKidDTO.getCode());
+            Integer i = (Integer) str;
+        } catch (ClassCastException ex) {
+            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
         }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
         listSEService.goDownByPosition(
                 movePositionKidDTO.getCode(), movePositionKidDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
@@ -146,10 +209,16 @@ public class ListSEController {
 
     @GetMapping(path = "/kidslocationcityinform")
     public ResponseEntity<ResponseDTO> getKidsLocationCityInform(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         List<Location> locationsCity = locationService.getLocationsByCodeSize(8);
         return new ResponseEntity<>(new ResponseDTO(
@@ -158,10 +227,16 @@ public class ListSEController {
 
     @GetMapping(path = "/kidslocationdepartmentsinform")
     public ResponseEntity<ResponseDTO> getKidsLocationDepartmentsInform(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         List<Location> locationsDepartments = locationService.getLocationsByCodeSize(5);
         return new ResponseEntity<>(new ResponseDTO(
@@ -170,10 +245,16 @@ public class ListSEController {
 
     @GetMapping(path = "/kidslocationcountriesinform")
     public ResponseEntity<ResponseDTO> getKidsLocationCountriesInform(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         List<Location> locationsCountries = locationService.getLocationsByCodeSize(3);
         return new ResponseEntity<>(new ResponseDTO(
@@ -182,10 +263,16 @@ public class ListSEController {
 
     @GetMapping("/invert")
     public ResponseEntity<ResponseDTO> invert(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         listSEService.invertKids();
         return new ResponseEntity<>(new ResponseDTO(
@@ -196,10 +283,16 @@ public class ListSEController {
 
     @GetMapping(path = "/change_extremes")
     public ResponseEntity<ResponseDTO> changeExtremes() {
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         listSEService.changeExtremesKids();
         return new ResponseEntity<>(new ResponseDTO(
@@ -209,10 +302,16 @@ public class ListSEController {
 
     @GetMapping(path = "/orderboystostart")
     public ResponseEntity<ResponseDTO> orderBoysToStart() {
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         listSEService.orderBoysToStartKids();
         return new ResponseEntity<>(new ResponseDTO(
@@ -222,10 +321,16 @@ public class ListSEController {
 
     @GetMapping(path = "/getaverage")
     public ResponseEntity<ResponseDTO> getAverage() {
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         return new ResponseEntity<>(new ResponseDTO(
                 200,"El promedio de edad de los niños es: " + listSEService.getAverageKids(),
@@ -234,10 +339,16 @@ public class ListSEController {
 
     @GetMapping(path = "/getinformkidsbylocationandage/{age}")
     public ResponseEntity<ResponseDTO> getInformKidsByLocation(@PathVariable byte age) {
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         List<Location> locationsCity = locationService.getLocationsByCodeSize(8);
         List<InformLocationAgeTotalDTO> informLocationAgeTotalDTOList = new ArrayList<>();
@@ -253,10 +364,16 @@ public class ListSEController {
     }
     @GetMapping(path = "/intercaleboysandgirls")
     public ResponseEntity<ResponseDTO> intercaleBoysAndGirlsList(){
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         listSEService.intercaleBoysAndGirlsKids();
         return new ResponseEntity<>(new ResponseDTO(
@@ -266,10 +383,16 @@ public class ListSEController {
     @GetMapping(path = "/rangebyage")
     public ResponseEntity<ResponseDTO> getRangeByKidsInform() {
         List<RangeAgeKidsDTO>  kidsRangeDTOList = new ArrayList<>();
-        if(listSEService.getKids() == null){
-            return new ResponseEntity<>(new ResponseDTO(
-                    404, "No hay ningun niño agregado", null), HttpStatus.OK);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            listSEService.getKids();
         }
+        catch (NullPointerException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay ningun niño agregado"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
 
         for (RangeAge rangeAge : rangeAgeService.getRanges()) {
             int quantity = listSEService.countKidsByAges(rangeAge.getFrom(), rangeAge.getTo());
