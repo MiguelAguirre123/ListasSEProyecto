@@ -83,7 +83,7 @@ public class ListDEController {
             listDEService.compareId(petDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay una mascota con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -114,7 +114,7 @@ public class ListDEController {
             listDEService.compareId(petDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay una mascota con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -144,14 +144,14 @@ public class ListDEController {
             listDEService.compareId(changePositionPetDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay una mascota con esa ID"));
         }
 
         try {
             listDEService.compareSizeWithPositionPet(changePositionPetDTO.getPosition()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "La posicion no corresponde con el tamaño de la lista de mascotas"));
+            errorsList.add(new ErrorDTO(422, "La posicion no corresponde con el tamaño de la lista de mascotas"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -173,7 +173,7 @@ public class ListDEController {
             Object str = listDEService.compareId(code);
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay una mascota con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -190,7 +190,7 @@ public class ListDEController {
         try {
             listDEService.compareAge(age).toString();
         } catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay una ninguna mascota con esa edad"));
+            errorsList.add(new ErrorDTO(404, "No hay una ninguna mascota con esa edad"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -208,7 +208,7 @@ public class ListDEController {
             Object str = listDEService.compareId(movePositionKidDTO.getCode());
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay una mascota con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -227,7 +227,7 @@ public class ListDEController {
             Object str = listDEService.compareId(movePositionKidDTO.getCode());
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay una mascota con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay una mascota con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);

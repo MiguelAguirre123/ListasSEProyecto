@@ -166,10 +166,10 @@ public class ListDE {
             List<ErrorDTO> listErrors = new ArrayList<>();
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
-                listErrors.add(new ErrorDTO(400, "La mascota esta en cabeza por lo que no se puede desplazar hacia arriba"));
+                listErrors.add(new ErrorDTO(422, "La mascota esta en cabeza por lo que no se puede desplazar hacia arriba"));
             }
             if (temp.getNext() == null) {
-                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia arriba"));
+                listErrors.add(new ErrorDTO(422, "Hay un solo dato en la lista por lo que no se puede desplazar hacia arriba"));
             }
             if (listErrors.size() != 0) {
                 throw new MyNullPointerException(listErrors);
@@ -179,7 +179,7 @@ public class ListDE {
                 if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                     positionPet++;
                     if (positionPet <= position) {
-                        listErrors.add(new ErrorDTO(400, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
+                        listErrors.add(new ErrorDTO(422, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
                         throw new MyNullPointerException(listErrors);
                     }
                     petByPosition = temp.getNext().getData();
@@ -207,13 +207,13 @@ public class ListDE {
             List<ErrorDTO> listErrors = new ArrayList<>();
 
             if (temp.getNext() == null) {
-                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia abajo"));
+                listErrors.add(new ErrorDTO(422, "Hay un solo dato en la lista por lo que no se puede desplazar hacia abajo"));
                 throw new MyNullPointerException(listErrors);
             }
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
                 if ((size - positionPet) < (position)) {
-                    listErrors.add(new ErrorDTO(400, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
+                    listErrors.add(new ErrorDTO(422, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
                     throw new MyNullPointerException(listErrors);
                 }
                 petByPosition = temp.getData();
@@ -223,13 +223,13 @@ public class ListDE {
             else {
                 while (temp.getNext() != null) {
                     if (temp.getNext().getNext() == null) {
-                        listErrors.add(new ErrorDTO(400, "La mascota esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
+                        listErrors.add(new ErrorDTO(422, "La mascota esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
                         throw new MyNullPointerException(listErrors);
                     }
                     if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                         positionPet++;
                         if ((size - positionPet) < (position)) {
-                            listErrors.add(new ErrorDTO(400, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
+                            listErrors.add(new ErrorDTO(422, "La posicion de la mascota no concuerda con las posiciones que se desean desplazarse"));
                             throw new MyNullPointerException(listErrors);
                         }
                         petByPosition = temp.getNext().getData();

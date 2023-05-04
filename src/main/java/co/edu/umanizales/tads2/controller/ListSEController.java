@@ -60,7 +60,7 @@ public class ListSEController {
             listSEService.compareId(kidDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -91,7 +91,7 @@ public class ListSEController {
             listSEService.compareId(kidDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -120,7 +120,7 @@ public class ListSEController {
             listSEService.compareId(changePositionKidDTO.getIdentification()).toString();
         }
         catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "Ya hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(422, "Ya hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -141,7 +141,7 @@ public class ListSEController {
             Object str = listSEService.compareId(code);
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -158,7 +158,7 @@ public class ListSEController {
         try {
             listSEService.compareAge(age).toString();
         } catch (NullPointerException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay una ningun niño con esa edad"));
+            errorsList.add(new ErrorDTO(404, "No hay una ningun niño con esa edad"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -176,7 +176,7 @@ public class ListSEController {
             Object str = listSEService.compareId(movePositionKidDTO.getCode());
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
@@ -195,7 +195,7 @@ public class ListSEController {
             Object str = listSEService.compareId(movePositionKidDTO.getCode());
             Integer i = (Integer) str;
         } catch (ClassCastException ex) {
-            errorsList.add(new ErrorDTO(400, "No hay un niño con esa ID"));
+            errorsList.add(new ErrorDTO(404, "No hay un niño con esa ID"));
         }
 
         Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);

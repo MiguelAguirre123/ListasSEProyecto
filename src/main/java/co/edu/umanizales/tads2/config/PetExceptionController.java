@@ -39,6 +39,6 @@ public class PetExceptionController {
     public ResponseEntity<ResponseDTO> resourceNotFoundException(MyNullPointerException e) {
         List<ErrorDTO> listMessage = e.getElements();
 
-        return new ResponseEntity<ResponseDTO>(new ResponseDTO(404, "Se produjo un error", listMessage), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<ResponseDTO>(new ResponseDTO(400, "Se produjo un error", listMessage), HttpStatus.BAD_REQUEST);
     }
 }

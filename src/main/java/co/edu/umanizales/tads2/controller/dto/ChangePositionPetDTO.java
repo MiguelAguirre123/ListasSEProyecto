@@ -7,9 +7,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ChangePositionPetDTO {
-    @NotEmpty(message = "Identificacion no puede estar vacio")
+    @NotEmpty(message = "La identificacion no puede estar vacia")
     private String identification;
-    @NotEmpty(message = "Nombre no puede estar vacio")
+    @NotEmpty(message = "El nombre no puede estar vacio")
+    @Size(max = 30, message = "El nombre no puede ser mayor a 30 caracteres")
     private String name;
     @Pattern(regexp = "[MF]", message = "El género debe ser M o F")
     @Size(min = 1, max = 1, message = "El género debe ser solo una letra")
@@ -23,7 +24,7 @@ public class ChangePositionPetDTO {
     private String weight;
     @NotEmpty(message = "La estatura no puede estar vacio")
     private String height;
-    @Size(min = 8, max = 8, message = "Codigo invalido")
+    @Size(min = 8, max = 8, message = "El codigo es invalido")
     private String codeLocation;
     @Positive(message = "La posicion debe ser mayor a 0")
     private byte position;

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class MovePositionKidDTO {
-    @NotEmpty(message = "Identificacion no puede estar vacio")
+    @NotEmpty(message = "La identificacion no puede estar vacia")
     private String code;
     @Positive(message = "La posicion debe ser mayor a 0")
     private byte position;

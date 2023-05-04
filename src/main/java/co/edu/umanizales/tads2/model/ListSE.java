@@ -103,7 +103,7 @@ public class ListSE {
                             return;
                         }
                         else {
-                            listErrors.add(new ErrorDTO(400, "La posicion no corresponde con el tamaño de la lista de niños"));
+                            listErrors.add(new ErrorDTO(422, "La posicion no corresponde con el tamaño de la lista de niños"));
                             throw new MyNullPointerException(listErrors);
                         }
                     }
@@ -116,7 +116,7 @@ public class ListSE {
             }
         } else {
             if (position != 1) {
-                listErrors.add(new ErrorDTO(400, "La posicion no corresponde con el tamaño de la lista de niños"));
+                listErrors.add(new ErrorDTO(422, "La posicion no corresponde con el tamaño de la lista de niños"));
                 throw new MyNullPointerException(listErrors);
             }
             head = new Node(kid);
@@ -343,10 +343,10 @@ public class ListSE {
             List<ErrorDTO> listErrors = new ArrayList<>();
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
-                listErrors.add(new ErrorDTO(400, "El niño esta en cabeza por lo que no se puede desplazar hacia arriba"));
+                listErrors.add(new ErrorDTO(422, "El niño esta en cabeza por lo que no se puede desplazar hacia arriba"));
             }
             if (temp.getNext() == null) {
-                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia arriba"));
+                listErrors.add(new ErrorDTO(422, "Hay un solo dato en la lista por lo que no se puede desplazar hacia arriba"));
             }
             if (listErrors.size() != 0) {
                 throw new MyNullPointerException(listErrors);
@@ -356,7 +356,7 @@ public class ListSE {
                 if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                     positionKid++;
                     if (positionKid <= position) {
-                        listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                        listErrors.add(new ErrorDTO(422, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
                         throw new MyNullPointerException(listErrors);
                     }
                     kidByPosition = temp.getNext().getData();
@@ -381,7 +381,7 @@ public class ListSE {
             List<ErrorDTO> listErrors = new ArrayList<>();
 
             if (temp.getNext() == null) {
-                listErrors.add(new ErrorDTO(400, "Hay un solo dato en la lista por lo que no se puede desplazar hacia abajo"));
+                listErrors.add(new ErrorDTO(422, "Hay un solo dato en la lista por lo que no se puede desplazar hacia abajo"));
                 throw new MyNullPointerException(listErrors);
             }
             else {
@@ -394,7 +394,7 @@ public class ListSE {
 
             if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
                 if ((sizeList - positionKid) < (position)) {
-                    listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                    listErrors.add(new ErrorDTO(422, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
                     throw new MyNullPointerException(listErrors);
                 }
                 kidByPosition = temp.getData();
@@ -403,13 +403,13 @@ public class ListSE {
             else {
                 while (temp.getNext() != null) {
                     if (temp.getNext().getNext() == null) {
-                        listErrors.add(new ErrorDTO(400, "El niño esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
+                        listErrors.add(new ErrorDTO(422, "El niño esta en el ultimo nodo por lo que no se puede desplazar hacia abajo"));
                         throw new MyNullPointerException(listErrors);
                     }
                     if (temp.getNext().getData().getIdentification().equalsIgnoreCase(identification)) {
                         positionKid++;
                         if ((sizeList - positionKid) < (position)) {
-                            listErrors.add(new ErrorDTO(400, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
+                            listErrors.add(new ErrorDTO(422, "La posicion del niño no concuerda con las posiciones que se desean desplazarse"));
                             throw new MyNullPointerException(listErrors);
                         }
                         kidByPosition = temp.getNext().getData();
