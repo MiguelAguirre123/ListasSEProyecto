@@ -53,6 +53,7 @@ public class ListDEService {
     public List<QuantityKidByLocationDTO> countPetByLocationAndAgeList(byte age, String code) { return pets.countPetByLocationAndAge(age, code); }
     public void intercaleMalesAndFemalesPets() { pets.intercalePetsMalesAndPetsFemales(); }
     public int countPetsByAges(int min, int max) { return pets.countPetsByAge(min, max); }
+    public void deleteByIdentificationV2(String identification) { pets.deletePetByIdentificationV2(identification); }
     public List<KidsByLocationDTO> getLocationInform(List<Location> locations, byte age) {
         List<KidsByLocationDTO> listPetsLocation = new ArrayList<>();
 

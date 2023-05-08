@@ -431,4 +431,22 @@ public class ListDEController {
 
         return new ResponseEntity<>(new ResponseDTO(200, petsRangeDTOList, null), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/deletebyidentificationv2/{code}")
+    public ResponseEntity<ResponseDTO> deletePetByIdentificationListV2(@PathVariable String code) {
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        try {
+            Object str = listDEService.compareId(code);
+            Integer i = (Integer) str;
+        } catch (ClassCastException ex) {
+            errorsList.add(new ErrorDTO(404, "No hay una mascota con esa ID"));
+        }
+
+        Optional<List<ErrorDTO>> optionalLista = Optional.ofNullable(errorsList);
+        optionalLista.filter(l -> l.isEmpty()).orElseThrow(() -> new MyNullPointerException(errorsList));
+
+        listDEService.deleteByIdentificationV2(code);
+        return new ResponseEntity<>(new ResponseDTO(
+                200, "Mascota Eliminada", null), HttpStatus.OK);
+    }
 }

@@ -494,4 +494,68 @@ public class ListDE {
 
         return counter;
     }
+
+    /* Eliminar niño por id V2
+
+        si hay datos?
+        si
+            llamo a ayudante
+            ayudante se posiciona en cabeza
+            el niño que esta en cabeza tiene la misma id que la ingresada?
+            si es asi
+                el costal siguiente esta vacio?
+                si es asi
+                    elimino el niño que hay en cabeza es decir cabeza tiene que estar vacio
+                    FIN CODIGO
+                si no es asi
+                    despego el brazo de siguiente donde esta ayudante y le digo al costal siguiente que despegue su brazo de anterior, asi elimino el costal
+                    FIN CODIGO
+            si no es asi
+                ayudante se pasa al siguiente costal
+                INICIO CICLO
+                el niño del costal en el que se encuentra ayudante tiene la misma id que la ingresada?
+                si es asi
+                    el costal siguiente esta vacio?
+                    si es asi
+                        despego el brazo de anterior de ayudante y le digo al costal anterior que despegue su brazo de siguiente, asi elimino el costal
+                    si no es asi
+                        despego el brazo de siguiente donde esta ayudante y le digo al saco anterior que despegue el brazo siguiente de ayudante, despues despego el brazo de anterior de ayudante y le digo al saco siguiente que despegue el brazo anterior, asi elimino el costal
+                ayudante se pasa al siguiente costal y se vuelve a repetir la pregunta anterior
+                si ayudante no encuentra al niño se genera una excepcion
+        no
+            no se hace nada
+     */
+    public void deletePetByIdentificationV2(String identification) {
+        if (head != null) {
+            ListDE newList = new ListDE();
+            NodeDE temp = head;
+
+            if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                if (temp.getNext() == null) {
+                    head = null;
+                }
+                else {
+                    head = temp.getNext();
+                    head.setPrevious(null);
+                }
+            }
+            else {
+                temp = temp.getNext();
+                while (temp.getData() != null) {
+                    if (temp.getData().getIdentification().equalsIgnoreCase(identification)) {
+                        if (temp.getNext() == null) {
+                            temp.getPrevious().setNext(null);
+                        }
+                        else {
+                            temp.getNext().setPrevious(temp.getPrevious());
+                            temp.getPrevious().setNext(temp.getNext());
+                        }
+                        return;
+                    }
+
+                    temp = temp.getNext();
+                }
+            }
+        }
+    }
 }
