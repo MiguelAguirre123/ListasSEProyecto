@@ -268,8 +268,8 @@ public class ListDECircular {
         if (head != null) {
             NodeDE temp = head;
             Random random = new Random();
-            int position = random.nextInt(100) + 1;
-            while (position != 1) {
+            int position = (random.nextInt(100) + 1) % size;
+            while (position != 0) {
                 if (direction == 'R') {
                     temp = temp.getNext();
                 }
