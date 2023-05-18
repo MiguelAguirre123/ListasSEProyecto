@@ -92,7 +92,7 @@ public class ListDEController {
         listDEService.addPet(new Pet(petDTO.getIdentification(),
                 petDTO.getName(), petDTO.getAge(),
                 petDTO.getGender().charAt(0), petDTO.getTypePet(),
-                petDTO.getWeight(), petDTO.getHeight(), location));
+                petDTO.getWeight(), petDTO.getHeight(), petDTO.isStateBathePet(), location));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Mascota Agregada",
                 null), HttpStatus.OK);
@@ -124,7 +124,7 @@ public class ListDEController {
                 new Pet(petDTO.getIdentification(),
                         petDTO.getName(), petDTO.getAge(),
                         petDTO.getGender().charAt(0), petDTO.getTypePet(),
-                        petDTO.getWeight(), petDTO.getHeight(), location));
+                        petDTO.getWeight(), petDTO.getHeight(), petDTO.isStateBathePet(), location));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Mascota agregada al inicio",null), HttpStatus.OK);
     }
@@ -161,7 +161,8 @@ public class ListDEController {
                 new Pet(changePositionPetDTO.getIdentification(),
                         changePositionPetDTO.getName(), changePositionPetDTO.getAge(),
                         changePositionPetDTO.getGender().charAt(0), changePositionPetDTO.getTypePet(),
-                        changePositionPetDTO.getWeight(), changePositionPetDTO.getHeight(), location), changePositionPetDTO.getPosition());
+                        changePositionPetDTO.getWeight(), changePositionPetDTO.getHeight(),
+                        changePositionPetDTO.isStateBathePet(), location), changePositionPetDTO.getPosition());
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Mascota agregada en la posicion especificada",null), HttpStatus.OK);
     }

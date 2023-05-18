@@ -13,5 +13,6 @@ public class Pet {
     private String typePet;
     private String weight;
     private String height;
+    private boolean stateBathePet;
     private Location location;
 }

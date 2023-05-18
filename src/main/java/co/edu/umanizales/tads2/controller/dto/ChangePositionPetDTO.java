@@ -26,6 +26,8 @@ public class ChangePositionPetDTO {
     private String height;
     @Size(min = 8, max = 8, message = "El codigo es invalido")
     private String codeLocation;
+    @NotNull(message = "El estado de baño de la mascota no puede estar vacio")
+    private boolean stateBathePet;
     @Positive(message = "La posicion debe ser mayor a 0")
     private byte position;
 }
